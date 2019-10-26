@@ -4,7 +4,7 @@ def get_v_name(number):
     name = ''
     while(number > 25):
         name += chr((number%25)+97)
-        number -= 25
+        number = number // 25
     
     name += chr(97+number)
     return name
@@ -15,13 +15,15 @@ def get_weight():
 def generate_graph(num_parents, num_random):
     
     edges = []
-    for v in range(num_parents):
+    for v in range(1, num_parents + 1):
         w = get_weight()
-        edges.append((v, v*2, w))
+        edges.append((v-1, v*2-1, w))
         w = get_weight()
-        edges.append((v, v*2+1, w))
+        edges.append((v-1, v*2, w))
 
     min_weight = min([x[2] for x in edges])
+    if(min_weight != 10):
+        edges[-1] = (*edges[-1][:2], 10)
 
     d = {k: [] for k in range(num_parents*2+1)}
 
@@ -34,12 +36,13 @@ def generate_graph(num_parents, num_random):
         indeces = []
 
         for k, v in d.items():
-            if(len(v) != num_parents*2+1):
+            if(len(v) < num_parents*2+1):
                 indeces.append(k)
 
         idx1 = random.choice(indeces) 
     
         idx2 = random.choice(list(set(range(num_parents*2+1)) - set([idx1]) -set(d[idx1])))
+        
 
         d[idx1].append(idx2)
         d[idx2].append(idx1)

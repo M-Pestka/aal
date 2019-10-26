@@ -20,12 +20,10 @@ if(__name__ == '__main__'):
 
     subtrees = []
     final_edges = []
-    print(edges)
     for e in edges:
         new_subtree = True
         set_number_v1 = -1
         set_number_v2 = -1
-        print(subtrees)
         for i, st in enumerate(subtrees):
             v1 = e[0] in st
             v2 = e[1] in st
@@ -36,32 +34,31 @@ if(__name__ == '__main__'):
             
             if(v1):
                 # dołączmy tę krawędź do istniejącego drzewa
-                st.add(v1)
+                st.add(e[1])
                 set_number_v1 = i
                 new_subtree = False
                 final_edges.append(e)
-                break
+                
 
             if(v2):
                 # dołączmy tę krawędź do istniejącego drzewa
-                st.add(v2)
+                st.add(e[0])
                 set_number_v2 = i
                 new_subtree = False
                 final_edges.append(e)
-                break
+                
             
             # lecimy w pętli
 
         # tworzymy nowe poddrzewo
         if(new_subtree):
-            print(e[:2])
+            final_edges.append(e)
             subtrees.append(set(e[:2]))
 
         else:
             # sprawdzamy czy należy połączyć 2 zbiory wierzchołków
             if(set_number_v1 != -1 and set_number_v2 != -1):
-                subtrees[set_number_v1].union(subtrees[set_number_v2])
-                subtrees.remove(set_number_v2)
+                subtrees[set_number_v1] = subtrees[set_number_v1].union(subtrees[set_number_v2])
+                subtrees.remove(subtrees[set_number_v2])
 
-    print('final edges: ', final_edges)
     print(min([x[2] for x in final_edges]))
