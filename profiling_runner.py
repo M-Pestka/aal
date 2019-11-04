@@ -1,4 +1,4 @@
-#! bin/python3
+#! /usr/bin/env python3
 from tqdm import tqdm
 
 import pandas as pd

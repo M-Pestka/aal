@@ -54,7 +54,7 @@ def generate_graph(num_parents, num_random):
 
         edges.append((idx1, idx2, int(random.random() * 8 + 1)))
 
-    edges = random.permutation(edges)
+    random.shuffle(edges)
     return edges
 
 import numpy as np
