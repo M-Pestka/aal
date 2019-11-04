@@ -1,5 +1,5 @@
 import sys
-
+import time
 
 def read_graph():
     edges = []
@@ -12,10 +12,12 @@ def read_graph():
 def sort_graph(edges):
     return sorted(edges, key = lambda x: x[2], reverse = True)
 
+#! /bin/python3
 
-if(__name__ == '__main__'):
+def main(timeit, edges):
+    
 
-    edges = read_graph()
+    t = time.time()
     edges = sort_graph(edges)
 
     subtrees = []
@@ -60,5 +62,18 @@ if(__name__ == '__main__'):
             if(set_number_v1 != -1 and set_number_v2 != -1):
                 subtrees[set_number_v1] = subtrees[set_number_v1].union(subtrees[set_number_v2])
                 subtrees.remove(subtrees[set_number_v2])
+    if(len(subtrees) != 1):
+        raise Exception('Nie da się znaleźć wartości maksymalnej')
+    if(timeit):
+        return time.time() - t
+    else:
+        return min([x[2] for x in final_edges])
 
-    print(min([x[2] for x in final_edges]))
+
+if(__name__ == '__main__'):
+    edges = read_graph()
+    if(len(sys.argv) > 1 and sys.argv[1] == 'timeit'):
+        rval = main(timeit = True, edges= edges)
+    else:
+        rval = main(timeit = False, edges = edges)
+    print(rval)

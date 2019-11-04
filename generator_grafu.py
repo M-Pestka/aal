@@ -1,3 +1,5 @@
+#! /bin/python3
+
 import random
 
 def get_v_name(number):
@@ -40,7 +42,10 @@ def generate_graph(num_parents, num_random):
                 indeces.append(k)
 
         idx1 = random.choice(indeces) 
-    
+        
+        if(len(list(set(range(num_parents*2+1)) - set([idx1]) -set(d[idx1]))) == 0):
+            break
+
         idx2 = random.choice(list(set(range(num_parents*2+1)) - set([idx1]) -set(d[idx1])))
         
 
@@ -49,8 +54,20 @@ def generate_graph(num_parents, num_random):
 
         edges.append((idx1, idx2, int(random.random() * 8 + 1)))
 
-
+    edges = random.permutation(edges)
     return edges
+
+import numpy as np
+def turbo_random(num_parents, aprox_num_random):
+    tab = np.random.random((2*num_parents+1, 2*num_parents+1))
+    for i in range(num_parents*2):
+        tab[i, i+1] = 1
+
+    tab *= 10
+    tab = np.where(tab > 10*(1 - (aprox_num_random / (4.*num_parents**2))), tab, 0)
+    indeces = np.nonzero(tab)
+    edges = np.concatenate([np.transpose(indeces), tab[indeces][:, None]], axis = 1)
+    return np.random.permutation(edges)
 
 
 if(__name__ == '__main__'):
@@ -59,7 +76,6 @@ if(__name__ == '__main__'):
     parser.add_argument('--num_parents', default = 5, type = int, help = 'number of parents in tree, the resulting graph will have num_parents*2+1 verteces')
     parser.add_argument('--num_random', default = 10, type = int, help = ' number of additional, random, edges')
     parser.add_argument('--output_file_name', default = '', type = str, help = 'name of the output text file')
-
     args = parser.parse_args()
 
     if((args.num_parents*2+1)**2 - (args.num_parents*2 + 1 - 1) < args.num_random):
@@ -69,6 +85,8 @@ if(__name__ == '__main__'):
     if(args.output_file_name == ''):
         for e in edges:
             print('{}, {}, {}'.format(get_v_name(e[0]), get_v_name(e[1]), e[2]))
+        import sys
+        sys.stdout.flush()
 
     else:
         with open(args.output_file_name, 'w') as file:
