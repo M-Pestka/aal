@@ -71,7 +71,32 @@ Zadaniem generatora 1 jest stworzenie zadania o zadanych parametrach którego wy
 
 
 
+**Generator2**
+Generator drugi znajduje zastosowanie w profilowaniu algorytmu. Zasada działania opiera się na wylosowaniu macierzy gęstej. Po otrzymaniu macierzy losowej o rozmiarach podyktowanych przez zadane rozmiary grafu, obliczany jest punkt odcięcia $x_{ths}$. Wyznaczany jest tak, aby w macierzy znajdowała się określona liczba liczb mniejszych od $x_{ths}$. Ponieważ znamy rozkład liczb (jest on jednorodny), możemy ustalić $X_{ths}$ "na oko", czyli tak żeby liczba liczb zgadzała się mniej więcej z zadaną wartością. Następnie zapewniana jest jednolitość grafu poprzez dodanie krawędzi. 
+
+
+
 ## Analiza złożoności
+
+Niech zbiór $E$ stanowi zbiór krawędzi, a zbiór $V$ zbiór wierzchołków. 
+
+Złożoność poszczególnych kroków jest następująca:
+
+* Sortowanie - $ O(|E|*log(|E|))$ 
+* znalezienie wierzchołka w podrzewie  - Dzięki implementacji na podstawie hashsetu - $O(1)$
+* połącznienie zbiorów ze sobą - $O(len(x_1) + len(x_2))$ . Ponieważ te zbiory mogą sumować się maksymalnie do $???$ , złożoność to $???$
+
+Dodatkowo po kroku sortowania wszyskie operacje działają w pętli o ilości powtóżeń równej $|E|$
+
+Wynika z tego że całkowita złożoność algorytmu to:
+$$
+O(|E|log(|E|)) + |E|*(O(1) + O(log(|V|)) = O(|E|log(|E|))+O(|E|log(|V|)) \\
+$$
+Wiemy również że $O(|E|) = O(|V|^2)$ dlatego możemy stwierdzić że pesymistyczna zlożoność algorytmu to
+$$
+O(|E|log(|E|))
+$$
+
 
 ## Testowanie
 
