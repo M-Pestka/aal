@@ -15,7 +15,7 @@ Problem postawiony w zadaniu polega więc na stworzeniu specyficznego rodzaju dr
 **Klasyczne drzewo rozpinające** 
 Problem drzewa rozpinającego polega na znalezieniu sieci połączneń nie zawierającej cykli która łączy wszystkie wierzchołki, dodatkowo spełniając pewnie kryterium.  Zwykle szukamy drzewa o jaknajniższej sumie wag krawędzi.
 
-**Nasze drzewo rozpinające**
+**Moje drzewo rozpinające**
 W zadaniu chodzi o znalezienie drzewa rozpinającego które maksymalizuje wagę krawędzi o najniższej wadze. 
 
 **Algorytm Kruskala**
@@ -24,10 +24,11 @@ Okazuje się że Algorytm kruskala, który służy do znajdowania klasycznego dr
 
 ## Metody rozwiązania
 
-Rozwiązanie zostało napisane w języku Python3. Dzieli się na 2 części:
+Rozwiązanie zostało napisane w języku Python3. Dzieli się na 3 części:
 
 * Cześć zawieracjąca algorytm
 * Część zawierająca algorytm
+* Część zawierającą strukturę danych - zbiór podzbiorów rozłącznych.
 
 ### Algorytm rozwiązania
 
@@ -37,28 +38,14 @@ Zgodnie z tym, co zostało napisane powyżej, użyłem niznacznie zmodyfikowaneg
 Algortm Kruskala jest bardzo prosty. Kroki algorytmu:
 
 * Utworzenie lasu (zbioru drzew) w którym każdy z wierzchołków jest osobnym drzewem.
-* Iteracja po zbiorze krawędzi zaczynając od krawędzi o najmniejszej wadze:
+* Posortowanie krawędzi
+* Dla każdej krawędzi w zbiorze zaczynając od krawędzi o najmniejszej wadze:
   * Wybranie pierwszej krawędzi oraz usunięcie jej ze zbioru krawędzi.
-  * Sprawdznie do ilu drzew należy krawędź:
-    * Jeśli do 1 -> odrzucamy krawędź.
-    * Jeśli do 2 -> łączymy te dwa drzewa w jedno oraz dołączamy krawędź.
-  * Wyjdź z pętli jeśli istnieje tylko jedno drzewo (jest ono rozpinające)
-
-**Mój Algorytm**
-
-Nie różni się zbytnio od wyżej wymienionego algorytmu. Jedne różnice to odwrócenie sortowania oraz dynamiczne dodawanie drzew kiedy zajdzie taka potrzeba.
-
-Kroki algorytmu:
-
-* Utworzenie pustej listy przeznaczonej na drzewa.
-* Iteracja po zbiorze krawędzi zaczynając od krawędzi o najmniejszej wadze:
-  * Wybranie pierwszej krawędzi oraz usunięcie jej ze zbioru krawędzi.
-  * Sprawdznie do ilu drzew należy krawędź:
-    * Jeśli do 0 -> tworzymy nowe drzewo zawierające 2 wierzchołki krawędzi oraz dodajemy je do listy drzew.
-    * Jeśli do 1 -> odrzucamy krawędź.
-    * Jeśli do 2 -> łączymy te dwa drzewa w jedno oraz dołączamy krawędź.
-
-
+  * znalezienie najwyższego parenta wierzchołka 1 w poddrzewie do którego należy (operacja FIND)
+  * znalezienie najwyższego parenta wierzchołka 2 w poddrzewie do którego należy (operacja FIND)
+  * Porównanie parenta wierzchołka 1 oraz 2:
+  	* Jeśli Parent(1) == Parent(2) -> nic nie robimy
+  	* Jeśli Parent(1) != Parent(2) -> łączymy drzewa ze sobą (opracja UNION)
 
 
 
@@ -99,8 +86,20 @@ $$
 
 
 ## Testowanie
-
+Algorytm rozwiązanie był testowany za pomocą generatora zdolnego określić jaka powinna być wynikowa wartość programu. Zostały wygenerowanie 3 grafy. Zostały one następnie wrzucone do programu rozwiązującego.
 
 
 ## Badanie 
+Zostały również przeprowadzone empiryczne badania złożoności obliczeniowej algorytmu. Badania te były bardzo proste i składały się z następującyk kroków:
+* wygenerowanie grafu
+* Sprawdzenie liczby krawędzi oraz zapisanie jej
+* Zapamiętanie obecnego czasu
+* Rozwiązanie zadanego problemu
+* Porównanie obeznego czasu z zapamiętaną wartością.
+
+Wyniki analizy:
+
+
+Wnioski z analizy:
+Empiryczna analiza złożoności pokazała że złożoność czasowa jest taka sama jak zakładana.
 
