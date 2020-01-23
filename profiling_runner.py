@@ -19,14 +19,16 @@ for p in [10, 40, 80, 120, 160, 200, 250, 300, 310, 320, 330]:
 
 if(__name__ == '__main__'):
     outcomes = []
+    import gc
     for i, (num_p, num_random) in enumerate(tqdm(test_cases)):    
         edges = turbo_random(num_p, num_random)
+        gc.collect()
         s = Solver()
-        s.edges = edges
+        s.edges = list(edges)
         time = s.solve(timeit = True)
 
         outcomes.append((num_p, num_random, len(edges), time))
         if(i%30 == 0):
-            pd.DataFrame(outcomes, columns = ['parents', 'random', 'edges', 'time']).to_csv('_logi_big.csv', index = False)
+            pd.DataFrame(outcomes, columns = ['parents', 'random', 'edges', 'time']).to_csv('2_logi_big.csv', index = False)
 
-    pd.DataFrame(outcomes, columns = ['parents', 'random', 'edges', 'time']).to_csv('_logi_biger.csv', index = False)  
+    pd.DataFrame(outcomes, columns = ['parents', 'random', 'edges', 'time']).to_csv('2_logi_biger.csv', index = False)  

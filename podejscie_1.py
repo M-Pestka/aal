@@ -31,6 +31,7 @@ class Solver:
     def _decode_graph(self):
         self.max_index = 0
         self.map = {}
+        self.edges = list(map(lambda x: (int(x[0]), int(x[1]), x[2]), self.edges))
         for i, e in enumerate(self.edges):
             if (e[0] not in self.map):
                 self.max_index += 1
@@ -41,18 +42,17 @@ class Solver:
 
             self.edges[i] = (self.map[e[0]], self.map[e[1]], e[2])
 
-        self.num_vertexes = max(map(lambda x: max(x[0], x[1]), self.edges))
+        self.num_vertexes = int(max(map(lambda x: max(x[0], x[1]), self.edges)))
 
     # ! /bin/python3
 
     def solve(self, timeit):
         final_edges = []
+        self._decode_graph()
         t = time.time()
         self._sort_graph()
-        self._decode_graph()
 
         self.subsets = subsets(self.num_vertexes)
-        print(self.num_vertexes)
         for e in self.edges:
             subset_root1 = self.subsets.find(e[0])
             subset_root2 = self.subsets.find(e[1])
